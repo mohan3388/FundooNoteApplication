@@ -85,29 +85,7 @@ namespace RepositoryLayer.Service
             }
         }
     
-        public string ForgetPassword(string emailId)
-        {
-            try
-            {
-                var emailCheck = fundooContext.UserTable.FirstOrDefault(e => e.EmailId == emailId);
-                if (emailCheck != null)
-                {
-                    var token = GenerateJWTToken(emailCheck.EmailId, emailCheck.UserId);
-                    MSMQModel mSMQModel = new MSMQModel();
-                    mSMQModel.sendData2Queue(token);
-                    return token.ToString();
-                }
-                else
-                {
-                    return null;
-                }
-            }
-
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-            }
+      
         }
     }
 
