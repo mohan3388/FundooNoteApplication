@@ -5,7 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Model\" />
+    <PackageReference Include="Experimental.System.Messaging" Version="1.1.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.0.0" />
   </ItemGroup>
 
 </Project>

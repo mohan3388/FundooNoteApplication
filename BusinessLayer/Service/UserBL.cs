@@ -26,5 +26,27 @@ namespace BusinessLayer.Service
                 throw;
             }
         }
+        public string Login(Login userLoginModel)
+        {
+            try
+            {
+                return userRL.Login(userLoginModel);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        public string ForgetPassword(string emailId)
+        {
+            try
+            {
+                return this.userRL.ForgetPassword(emailId);
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

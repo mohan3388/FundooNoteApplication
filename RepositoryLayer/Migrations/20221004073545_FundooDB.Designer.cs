@@ -2,15 +2,17 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RepositoryLayer.Context;
 
 namespace RepositoryLayer.Migrations
 {
     [DbContext(typeof(FundooContext))]
-    partial class FundooContextModelSnapshot : ModelSnapshot
+    [Migration("20221004073545_FundooDB")]
+    partial class FundooDB
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -20,9 +22,9 @@ namespace RepositoryLayer.Migrations
 
             modelBuilder.Entity("RepositoryLayer.Entity.UserEntity", b =>
                 {
-                    b.Property<long>("UserId")
+                    b.Property<int>("UserId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("EmailId")

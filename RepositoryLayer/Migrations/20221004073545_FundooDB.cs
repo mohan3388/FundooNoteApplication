@@ -2,7 +2,7 @@
 
 namespace RepositoryLayer.Migrations
 {
-    public partial class InitialMigration : Migration
+    public partial class FundooDB : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -10,7 +10,7 @@ namespace RepositoryLayer.Migrations
                 name: "UserTable",
                 columns: table => new
                 {
-                    UserId = table.Column<long>(nullable: false)
+                    UserId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     FirstName = table.Column<string>(nullable: true),
                     LastName = table.Column<string>(nullable: true),
