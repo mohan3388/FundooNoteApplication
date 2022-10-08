@@ -57,10 +57,10 @@ namespace RepositoryLayer.Service
             {
                 return null;
             }
-            return GenerateJWTToken(login.EmailId, login.UserId);
+            return GenerateJWTToken(login.EmailId, data.UserId);
         }
 
-        private string GenerateJWTToken(string email, int UserId)
+        private string GenerateJWTToken(string email, long UserId)
         {
             try
             {
@@ -90,25 +90,7 @@ namespace RepositoryLayer.Service
                 throw ex;
             }
         }
-        public static void SendEmail(string email, string token, string Firstname)
-        {
-            using (SmtpClient client = new SmtpClient("smtp.gmail.com", 587))
-            {
-                client.EnableSsl = true;
-                client.DeliveryMethod = SmtpDeliveryMethod.Network;
-                client.UseDefaultCredentials = true;
-                client.Credentials = new NetworkCredential("sahumks05@gmail.com", "wnxlphufacktodem");
-                MailMessage msgObj = new MailMessage();
-                msgObj.To.Add(email);
-                msgObj.IsBodyHtml = true;
-                msgObj.From = new MailAddress("sahumks05@gmail.com");
-                msgObj.Subject = "Password Reset Link";
-                msgObj.Body = "<html><body><p><b>Hello " + $"{Firstname}" + "</b>,<br/>Please click the below link to Reset Your Password.<br/>" +
-                   $"www.fundooapp.com/reset-password/{token}" +
-                   "<br/><br/><br/><b>Thanks&Regards </b><br/><b>Mail Team(donot - reply to this mail)</b></p></body></html>";
-                client.Send(msgObj);
-            }
-        }
+ 
 
         public string ForgetPassword(string emailId)
         {

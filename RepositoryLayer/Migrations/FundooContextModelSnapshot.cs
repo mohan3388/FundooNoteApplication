@@ -21,9 +21,9 @@ namespace RepositoryLayer.Migrations
 
             modelBuilder.Entity("RepositoryLayer.Entity.NoteEntity", b =>
                 {
-                    b.Property<int>("NoteId")
+                    b.Property<long>("NoteId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
+                        .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<bool>("Archieve")
@@ -56,8 +56,8 @@ namespace RepositoryLayer.Migrations
                     b.Property<bool>("Trash")
                         .HasColumnType("bit");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("NoteId");
 
@@ -68,9 +68,9 @@ namespace RepositoryLayer.Migrations
 
             modelBuilder.Entity("RepositoryLayer.Entity.UserEntity", b =>
                 {
-                    b.Property<int>("UserId")
+                    b.Property<long>("UserId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
+                        .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("EmailId")

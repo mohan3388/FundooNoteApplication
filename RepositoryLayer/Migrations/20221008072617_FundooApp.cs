@@ -3,15 +3,31 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace RepositoryLayer.Migrations
 {
-    public partial class Notes : Migration
+    public partial class FundooApp : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "UserTable",
+                columns: table => new
+                {
+                    UserId = table.Column<long>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FirstName = table.Column<string>(nullable: true),
+                    LastName = table.Column<string>(nullable: true),
+                    EmailId = table.Column<string>(nullable: true),
+                    Password = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserTable", x => x.UserId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "NoteTable",
                 columns: table => new
                 {
-                    NoteId = table.Column<int>(nullable: false)
+                    NoteId = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
@@ -23,7 +39,7 @@ namespace RepositoryLayer.Migrations
                     Trash = table.Column<bool>(nullable: false),
                     Created = table.Column<DateTime>(nullable: false),
                     Edited = table.Column<DateTime>(nullable: false),
-                    UserId = table.Column<int>(nullable: false)
+                    UserId = table.Column<long>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -46,6 +62,9 @@ namespace RepositoryLayer.Migrations
         {
             migrationBuilder.DropTable(
                 name: "NoteTable");
+
+            migrationBuilder.DropTable(
+                name: "UserTable");
         }
     }
 }

@@ -9,7 +9,8 @@ namespace RepositoryLayer.Entity
     public class UserEntity
     {
         [Key]
-        public int UserId { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public long UserId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
        
