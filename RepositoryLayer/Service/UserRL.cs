@@ -1,4 +1,5 @@
 ﻿using CommonLayer.Model;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using RepositoryLayer.Context;
 using RepositoryLayer.Entity;
@@ -7,6 +8,8 @@ using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Security.Claims;
 using System.Text;
 
@@ -15,9 +18,11 @@ namespace RepositoryLayer.Service
     public class UserRL : IUserRL
     {
         private readonly FundooContext fundooContext;
+        private readonly IConfiguration config;
 
-        public UserRL(FundooContext fundooContext)
+        public UserRL(FundooContext fundooContext,IConfiguration config)
         {
+            this.config = config;
             this.fundooContext = fundooContext;
         }
         public UserEntity userRegistration(Register registration)
@@ -61,12 +66,13 @@ namespace RepositoryLayer.Service
             {
                 // generate token
                 var tokenHandler = new JwtSecurityTokenHandler();
-                var tokenKey = Encoding.ASCII.GetBytes("THIS_IS_MY_KEY_TO_GENERATE_TOKEN");
+                var tokenKey = Encoding.ASCII.GetBytes(this.config[("Jwt:key")]);
                 var tokenDescriptor = new SecurityTokenDescriptor
                 {
                     Subject = new ClaimsIdentity(new Claim[]
                     {
                     new Claim("Email", email),
+                      
                     new Claim("UserId", UserId.ToString()),
                     }),
                     Expires = DateTime.UtcNow.AddHours(2),
@@ -84,7 +90,26 @@ namespace RepositoryLayer.Service
                 throw ex;
             }
         }
-    
+        public static void SendEmail(string email, string token, string Firstname)
+        {
+            using (SmtpClient client = new SmtpClient("smtp.gmail.com", 587))
+            {
+                client.EnableSsl = true;
+                client.DeliveryMethod = SmtpDeliveryMethod.Network;
+                client.UseDefaultCredentials = true;
+                client.Credentials = new NetworkCredential("sahumks05@gmail.com", "wnxlphufacktodem");
+                MailMessage msgObj = new MailMessage();
+                msgObj.To.Add(email);
+                msgObj.IsBodyHtml = true;
+                msgObj.From = new MailAddress("sahumks05@gmail.com");
+                msgObj.Subject = "Password Reset Link";
+                msgObj.Body = "<html><body><p><b>Hello " + $"{Firstname}" + "</b>,<br/>Please click the below link to Reset Your Password.<br/>" +
+                   $"www.fundooapp.com/reset-password/{token}" +
+                   "<br/><br/><br/><b>Thanks&Regards </b><br/><b>Mail Team(donot - reply to this mail)</b></p></body></html>";
+                client.Send(msgObj);
+            }
+        }
+
         public string ForgetPassword(string emailId)
         {
             try
@@ -108,7 +133,31 @@ namespace RepositoryLayer.Service
                 throw ex;
             }
             }
+        public bool ResetPassword(string email, PasswordResetModel modelPassword)
+        {
+
+            try
+            {
+                var user = this.fundooContext.UserTable.Where(x => x.EmailId == email).FirstOrDefault();
+                if (user == null)
+                {
+                    return false;
+                }
+
+                if (modelPassword.Password == modelPassword.ConfirmPassword)
+                {
+                    user.Password = modelPassword.Password;
+                    this.fundooContext.SaveChanges();
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
+    }
     }
 
 

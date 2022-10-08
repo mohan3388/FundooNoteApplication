@@ -14,8 +14,8 @@ namespace CommonLayer.Model
         public void sendData2Queue(string token)
         {
             messageQueue.Path = @".\private$\Token";
-            if (!MessageQueue.Exists(messageQueue.Path))
-            {
+            if(!MessageQueue.Exists(messageQueue.Path))
+             {
                 MessageQueue.Create(messageQueue.Path);
 
             }
@@ -32,20 +32,20 @@ namespace CommonLayer.Model
             try
             {
                 var msg = messageQueue.EndReceive(e.AsyncResult);
-                string token = msg.Body.ToString();
+                string token=msg.Body.ToString();
                 string subject = "FundooNotesResetLink";
                 string body = token;
 
                 var smtp = new SmtpClient("smtp.gmail.com")
                 {
                     Port = 587,
-                    Credentials = new NetworkCredential("smr398700@gmail.com", "qbddogtwydlrphrx"),
+                    Credentials = new NetworkCredential("sahumks05@gmail.com", "wnxlphufacktodem"),
                     EnableSsl = true
                 };
-                smtp.Send("smr398700@gmail.com", "smr398700@gmail.com", subject, body);
+                smtp.Send("sahumks05@gmail.com", "sahumks05@gmail.com", subject,body);
                 messageQueue.BeginReceive();
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 throw ex;
             }

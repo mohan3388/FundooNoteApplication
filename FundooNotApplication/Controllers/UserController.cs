@@ -1,8 +1,12 @@
 ﻿using BusinessLayer.Interface;
 using CommonLayer.Model;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
 
 namespace FundooNotApplication.Controllers
 {
@@ -69,10 +73,43 @@ namespace FundooNotApplication.Controllers
                 }
                 else
                 {
-                    return this.BadRequest(new { success = false, message = "message mot found" });
+                    return this.BadRequest(new { success = false, message = "message not found" });
                 }
             } catch(Exception ex)
             {
+                throw ex;
+            }
+        }
+        //[Authorize]
+        [HttpPost("ResetPassword")]
+        public IActionResult ResetPassword(PasswordResetModel modelPassword)
+        {
+            try
+            {
+                if (modelPassword.Password != modelPassword.ConfirmPassword)
+                {
+                   
+                    return this.BadRequest(new { success = false, message = "New Password and Confirm Password are not equal." });
+                }
+
+                var identity = User.Identity as ClaimsIdentity;
+                if (identity != null)
+                {
+                    IEnumerable<Claim> claims = identity.Claims;
+                    var email = claims.Where(p => p.Type == @"Email").FirstOrDefault()?.Value;
+                    this.userBL.ResetPassword(email, modelPassword);
+                   
+                    return this.Ok(new { success = true, message = "Password Reset Sucessfully...", email = $"{email}" });
+                }
+                else
+                {
+                   
+                    return this.BadRequest(new { success = false, message = "Password Reset Unsuccessful!!!" });
+                }
+            }
+            catch (Exception ex)
+            {
+               
                 throw ex;
             }
         }
