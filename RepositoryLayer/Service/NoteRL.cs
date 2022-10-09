@@ -67,5 +67,53 @@ namespace RepositoryLayer.Service
                 throw;
             }
         }
+        public NoteEntity UpdateNotes(NotePostModel postModel,long UserId, long NoteId)
+        {
+            try
+            {
+                var result = fundonoteContext.NoteTable.Where(x => x.UserId == UserId && x.NoteId==NoteId).FirstOrDefault();
+                if(result != null)
+                {
+                    result.Title = postModel.Title;
+                    result.Description = postModel.Description;
+                    result.Color = postModel.Color;
+                    result.Reminder = postModel.Reminder;
+                    result.Image = postModel.Image;
+                    result.Edited = DateTime.Now;
+                    fundonoteContext.SaveChanges();
+                    return result;
+                }
+                else
+                {
+                    return null;
+                }
+                
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        public bool DeleteNotes(long UserId, long NoteId)
+        {
+            try
+            {
+                var result = fundonoteContext.NoteTable.Where(x => x.UserId == UserId && x.NoteId == NoteId).FirstOrDefault();
+                if (result != null)
+                {
+                    fundonoteContext.NoteTable.Remove(result);
+                    fundonoteContext.SaveChanges();
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
     }
 }

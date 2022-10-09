@@ -42,7 +42,7 @@ namespace FundooNotApplication.Controllers
             }
         }
         [Authorize]
-        [HttpGet("GetUsers")]
+        [HttpGet("GetNotes")]
         public ActionResult GetAllNotes(long UserId)
         {
             try {
@@ -62,5 +62,49 @@ namespace FundooNotApplication.Controllers
                 throw;
             }
     }
+        [Authorize]
+        [HttpPut("Updatenotes")]
+        public IActionResult UpdateNotes(NotePostModel notePost, long NoteId)
+        {
+            try
+            {
+                long UserId = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "UserId").Value);
+                var result = noteBL.UpdateNotes(notePost, UserId, NoteId);
+                if (result != null)
+                {
+                    return Ok(new { success = true, message = "Data Updated successfully", data = result });
+                }
+                else
+                {
+                    return BadRequest(new { success = true, message = "Data Updated failed" });
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        [Authorize]
+        [HttpDelete("DeleteNote")]
+        public IActionResult DeletNote(long NoteId)
+        {
+            try
+            {
+                long UserId = Convert.ToInt32(User.Claims.FirstOrDefault(e=>e.Type=="UserId").Value);
+                var result=noteBL.DeleteNotes(UserId, NoteId);
+                if (result != null)
+                {
+                    return Ok(new { success = true, message="note successfully deleted", data=result });
+                }
+                else
+                {
+                    return BadRequest(new { success = true, message = "note successfully deleted" });
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
     }
 }
