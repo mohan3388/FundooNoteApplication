@@ -61,5 +61,49 @@ namespace BusinessLayer.Service
                 throw;
             }
         }
+        public NoteEntity PinNotes(long UserId, long NoteId)
+        {
+            try
+            {
+                return noteRL.PinNotes(UserId, NoteId);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            }
+        public NoteEntity ArchieveNote(long UserId, long NoteId)
+        {
+            try
+            {
+                return noteRL.ArchieveNote(UserId, NoteId);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        public NoteEntity TrashNotes(long UserId, long NoteId)
+        {
+            try
+            {
+                return noteRL.TrashNotes(UserId, NoteId);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        public NoteEntity ChangeColor(long UserId, string color)
+        {
+            try
+            {
+                return noteRL.ChangeColor(UserId, color);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
     }
 }

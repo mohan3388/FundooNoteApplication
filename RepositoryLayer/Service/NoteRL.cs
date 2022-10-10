@@ -12,15 +12,15 @@ using System.Threading.Tasks;
 
 namespace RepositoryLayer.Service
 {
-    public class NoteRL:INoteRL
+    public class NoteRL : INoteRL
     {
         private readonly FundooContext fundonoteContext;
-        
+
 
         public NoteRL(FundooContext fundonoteContext)
         {
             this.fundonoteContext = fundonoteContext;
-           
+
         }
 
         public NoteEntity AddNote(long UserId, NotePostModel noteModel)
@@ -31,7 +31,7 @@ namespace RepositoryLayer.Service
                 note.UserId = UserId;
                 note.Title = noteModel.Title;
                 note.Description = noteModel.Description;
-                note.Reminder=noteModel.Reminder;
+                note.Reminder = noteModel.Reminder;
                 note.Color = noteModel.Color;
                 note.Image = noteModel.Image;
                 note.Archieve = noteModel.Archieve;
@@ -40,7 +40,7 @@ namespace RepositoryLayer.Service
                 note.Created = DateTime.Now;
                 note.Edited = DateTime.Now;
                 fundonoteContext.NoteTable.Add(note);
-                int result=fundonoteContext.SaveChanges();
+                int result = fundonoteContext.SaveChanges();
                 if (result > 0)
                 {
                     return note;
@@ -59,7 +59,7 @@ namespace RepositoryLayer.Service
         {
             try
             {
-                var result=fundonoteContext.NoteTable.Where(x=>x.UserId==UserId);
+                var result = fundonoteContext.NoteTable.Where(x => x.UserId == UserId);
                 return result;
             }
             catch (Exception)
@@ -67,12 +67,12 @@ namespace RepositoryLayer.Service
                 throw;
             }
         }
-        public NoteEntity UpdateNotes(NotePostModel postModel,long UserId, long NoteId)
+        public NoteEntity UpdateNotes(NotePostModel postModel, long UserId, long NoteId)
         {
             try
             {
-                var result = fundonoteContext.NoteTable.Where(x => x.UserId == UserId && x.NoteId==NoteId).FirstOrDefault();
-                if(result != null)
+                var result = fundonoteContext.NoteTable.Where(x => x.UserId == UserId && x.NoteId == NoteId).FirstOrDefault();
+                if (result != null)
                 {
                     result.Title = postModel.Title;
                     result.Description = postModel.Description;
@@ -87,7 +87,7 @@ namespace RepositoryLayer.Service
                 {
                     return null;
                 }
-                
+
             }
             catch (Exception)
             {
@@ -115,5 +115,93 @@ namespace RepositoryLayer.Service
                 throw;
             }
         }
+        public NoteEntity PinNotes(long UserId, long NoteId)
+        {
+            try
+            {
+                var result = fundonoteContext.NoteTable.Where(x => x.UserId == UserId && x.NoteId == NoteId).FirstOrDefault();
+                if (result.IsPinned = true)
+                {
+                    result.IsPinned = false;
+                    fundonoteContext.SaveChanges();
+                    return result;
+                } else
+                {
+                    result.IsPinned = true;
+                    fundonoteContext.SaveChanges();
+                    return result;
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        public NoteEntity ArchieveNote(long UserId, long NoteId)
+        {
+            try
+            {
+                var result = fundonoteContext.NoteTable.Where(x => x.UserId == UserId && x.NoteId == NoteId).FirstOrDefault();
+                if (result.Archieve == true)
+                {
+                    result.Archieve = false;
+                    fundonoteContext.SaveChanges();
+                    return result;
+                }
+                else
+                {
+                    result.Archieve = true;
+                    fundonoteContext.SaveChanges();
+                    return null;
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        public NoteEntity TrashNotes(long UserId, long NoteId)
+        {
+            try
+            {
+                var result = fundonoteContext.NoteTable.Where(x => x.UserId == UserId && x.NoteId == NoteId).FirstOrDefault();
+                if (result.Archieve == true)
+                {
+                    result.Archieve = false;
+                    fundonoteContext.SaveChanges();
+                    return result;
+                }
+                else
+                {
+                    result.Archieve = true;
+                    fundonoteContext.SaveChanges();
+                    return null;
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        public NoteEntity ChangeColor(long NoteId, string color)
+        {
+            try {
+                var result = fundonoteContext.NoteTable.Where(x => x.NoteId == NoteId).FirstOrDefault();
+                if (result != null)
+                {
+                    result.Color = color;
+                    fundonoteContext.SaveChanges();
+                    return result;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+    }
     }
 }

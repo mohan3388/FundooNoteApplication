@@ -75,7 +75,7 @@ namespace RepositoryLayer.Service
                       
                     new Claim("UserId", UserId.ToString()),
                     }),
-                    Expires = DateTime.UtcNow.AddHours(2),
+                    Expires = DateTime.UtcNow.AddMinutes(30),
 
                     SigningCredentials =
                     new SigningCredentials(
@@ -139,6 +139,8 @@ namespace RepositoryLayer.Service
                 throw ex;
             }
         }
+    
+
     }
     }
 
