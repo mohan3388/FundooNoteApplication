@@ -28,11 +28,11 @@ namespace BusinessLayer.Service
                 throw ex;
             }
         }
-        public IEnumerable<NoteEntity> GetAllNotes(long UserId)
+        public IEnumerable<NoteEntity> GetAllNotes(long NoteId)
         {
             try
             {
-                return noteRL.GetAllNotes(UserId);
+                return noteRL.GetAllNotes(NoteId);
             }
             catch (Exception)
             {
@@ -106,7 +106,7 @@ namespace BusinessLayer.Service
                 throw;
             }
         }
-        public string UploadImage(IFormFile image,long UserId,long NoteId)
+        public NoteEntity UploadImage(IFormFile image,long UserId,long NoteId)
         {
             try
             {

@@ -59,11 +59,11 @@ namespace RepositoryLayer.Service
                 throw ex;
             }
         }
-        public IEnumerable<NoteEntity> GetAllNotes(long UserId)
+        public IEnumerable<NoteEntity> GetAllNotes(long NoteId)
         {
             try
             {
-                var result = fundonoteContext.NoteTable.Where(x => x.UserId == UserId);
+                var result = fundonoteContext.NoteTable.Where(x => x.NoteId == NoteId);
                 return result;
             }
             catch (Exception)
@@ -209,7 +209,7 @@ namespace RepositoryLayer.Service
                 throw;
             }
         }
-        public string Uploadimage(IFormFile image, long UserId, long NoteId)
+        public NoteEntity Uploadimage(IFormFile image, long UserId, long NoteId)
         {
             try
             {
@@ -229,10 +229,10 @@ namespace RepositoryLayer.Service
                     };
                     var uploadResult = cloudinary.Upload(uploadParams);
                     string imagePath = uploadResult.Url.ToString();
-
+                  
                     result.Image = imagePath;
                     fundonoteContext.SaveChanges();
-                    return "Image Uploaded";
+                    return result;
                  }
                else
                 {

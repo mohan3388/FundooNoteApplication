@@ -11,13 +11,13 @@ namespace RepositoryLayer.Interface
     public interface INoteRL
     {
         public NoteEntity AddNote(long UserId, NotePostModel noteModel);
-        public IEnumerable<NoteEntity> GetAllNotes(long UserId);
+        public IEnumerable<NoteEntity> GetAllNotes(long NoteId);
         public NoteEntity UpdateNotes(NotePostModel postModel, long UserId, long NoteId);
         public bool DeleteNotes(long UserId, long NoteId);
         public NoteEntity PinNotes(long UserId, long NoteId);
         public NoteEntity ArchieveNote(long UserId, long NoteId);
         public NoteEntity TrashNotes(long UserId, long NoteId);
         public NoteEntity ChangeColor(long NoteId, string color);
-        public string Uploadimage(IFormFile image, long UserId, long NoteId);
+        public NoteEntity Uploadimage(IFormFile image, long UserId, long NoteId);
     }
 }

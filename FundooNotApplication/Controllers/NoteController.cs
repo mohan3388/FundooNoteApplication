@@ -44,11 +44,11 @@ namespace FundooNotApplication.Controllers
         }
 
         [HttpGet("GetNotes")]
-        public ActionResult GetAllNotes(long UserId)
+        public IActionResult GetAllNotes(long NoteId)
         {
             try {
                 long userId = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "UserId").Value);
-                var result = noteBL.GetAllNotes(userId);
+                var result = noteBL.GetAllNotes(NoteId);
                 if (result != null)
                 {
                     return Ok(new { success = true, message = "successfully data retrieved", data = result });
