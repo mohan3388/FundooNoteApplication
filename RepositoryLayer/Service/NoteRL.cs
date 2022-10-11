@@ -1,4 +1,7 @@
-﻿using CommonLayer.Model;
+﻿using CloudinaryDotNet;
+using CloudinaryDotNet.Actions;
+using CommonLayer.Model;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using RepositoryLayer.Context;
@@ -6,6 +9,7 @@ using RepositoryLayer.Entity;
 using RepositoryLayer.Interface;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -125,7 +129,8 @@ namespace RepositoryLayer.Service
                     result.IsPinned = false;
                     fundonoteContext.SaveChanges();
                     return result;
-                } else
+                }
+                else
                 {
                     result.IsPinned = true;
                     fundonoteContext.SaveChanges();
@@ -185,7 +190,8 @@ namespace RepositoryLayer.Service
         }
         public NoteEntity ChangeColor(long NoteId, string color)
         {
-            try {
+            try
+            {
                 var result = fundonoteContext.NoteTable.Where(x => x.NoteId == NoteId).FirstOrDefault();
                 if (result != null)
                 {
@@ -202,6 +208,42 @@ namespace RepositoryLayer.Service
             {
                 throw;
             }
-    }
+        }
+        public string Uploadimage(IFormFile image, long UserId, long NoteId)
+        {
+            try
+            {
+                var result = fundonoteContext.NoteTable.Where(x => x.UserId == UserId && x.NoteId == NoteId).FirstOrDefault();
+                if (result != null)
+                {
+                   
+                    Account account = new Account(
+                         "dozqk0y2u",        // CLOUD_NAME,API_KEY,API_SECRET
+                         "191551212515752",  
+                         "OBsmdMUliFYjRcHITgaADE-vXbM");
+                    Cloudinary cloudinary = new Cloudinary(account);
+
+                    var uploadParams = new ImageUploadParams() //add image with additional parameteres
+                    {
+                        File = new FileDescription(image.FileName, image.OpenReadStream()),
+                    };
+                    var uploadResult = cloudinary.Upload(uploadParams);
+                    string imagePath = uploadResult.Url.ToString();
+
+                    result.Image = imagePath;
+                    fundonoteContext.SaveChanges();
+                    return "Image Uploaded";
+                 }
+               else
+                {
+                    return null;
+
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
     }
 }

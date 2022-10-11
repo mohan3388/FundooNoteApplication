@@ -1,5 +1,6 @@
 ﻿using BusinessLayer.Interface;
 using CommonLayer.Model;
+using Microsoft.AspNetCore.Http;
 using RepositoryLayer.Entity;
 using RepositoryLayer.Interface;
 using System;
@@ -99,6 +100,17 @@ namespace BusinessLayer.Service
             try
             {
                 return noteRL.ChangeColor(UserId, color);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        public string UploadImage(IFormFile image,long UserId,long NoteId)
+        {
+            try
+            {
+                return noteRL.Uploadimage(image, UserId, NoteId);
             }
             catch (Exception)
             {
