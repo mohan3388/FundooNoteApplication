@@ -44,6 +44,31 @@ namespace RepositoryLayer.Migrations
                     b.ToTable("CollabTable");
                 });
 
+            modelBuilder.Entity("RepositoryLayer.Entity.LabelEntity", b =>
+                {
+                    b.Property<long>("LabelId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("LabelName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("NoteId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("LabelId");
+
+                    b.HasIndex("NoteId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("LabelTable");
+                });
+
             modelBuilder.Entity("RepositoryLayer.Entity.NoteEntity", b =>
                 {
                     b.Property<long>("NoteId")
@@ -116,6 +141,21 @@ namespace RepositoryLayer.Migrations
                 });
 
             modelBuilder.Entity("RepositoryLayer.Entity.CollabEntity", b =>
+                {
+                    b.HasOne("RepositoryLayer.Entity.NoteEntity", "Note")
+                        .WithMany()
+                        .HasForeignKey("NoteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("RepositoryLayer.Entity.UserEntity", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("RepositoryLayer.Entity.LabelEntity", b =>
                 {
                     b.HasOne("RepositoryLayer.Entity.NoteEntity", "Note")
                         .WithMany()

@@ -27,7 +27,7 @@ namespace FundooNotApplication.Controllers
         {
             try
             {
-              
+               // long UserId = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "UserId"));
                 var result = collabBL.AddCollab(NoteId, Email);
                 if (result != null)
                 {
