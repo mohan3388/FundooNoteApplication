@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32630.192
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FundooNotApplication", "FundooNotApplication\FundooNotApplication.csproj", "{1FC6E3AD-C997-4E9C-90C4-223246FA6DD8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FundooNotApplication", "FundooNotApplication\FundooNotApplication.csproj", "{1FC6E3AD-C997-4E9C-90C4-223246FA6DD8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RepositoryLayer", "RepositoryLayer\RepositoryLayer.csproj", "{D5F5F9A5-7457-4231-8473-D219066C7E3C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RepositoryLayer", "RepositoryLayer\RepositoryLayer.csproj", "{D5F5F9A5-7457-4231-8473-D219066C7E3C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessLayer", "BusinessLayer\BusinessLayer.csproj", "{4F6D9983-60C7-42C2-9DDA-72B83DD5AD2E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessLayer", "BusinessLayer\BusinessLayer.csproj", "{4F6D9983-60C7-42C2-9DDA-72B83DD5AD2E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonLayer", "CommonLayer\CommonLayer.csproj", "{CDAC5A9F-5758-445D-BC27-7A6FBFA669F8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommonLayer", "CommonLayer\CommonLayer.csproj", "{CDAC5A9F-5758-445D-BC27-7A6FBFA669F8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

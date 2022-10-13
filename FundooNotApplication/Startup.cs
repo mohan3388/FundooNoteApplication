@@ -87,6 +87,11 @@ namespace FundooNotApplication
                     ValidateAudience = false
                 };
             });
+            services.AddStackExchangeRedisCache(options =>
+            {
+                options.Configuration = "localhost:6379";
+            });
+            services.AddMemoryCache();
         }
 
 
