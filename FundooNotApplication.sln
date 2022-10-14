@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessLayer", "BusinessLa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommonLayer", "CommonLayer\CommonLayer.csproj", "{CDAC5A9F-5758-445D-BC27-7A6FBFA669F8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NLogger", "NLogger\NLogger.csproj", "{60748D80-9DD1-4296-94BC-95BF863A29FA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{CDAC5A9F-5758-445D-BC27-7A6FBFA669F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CDAC5A9F-5758-445D-BC27-7A6FBFA669F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CDAC5A9F-5758-445D-BC27-7A6FBFA669F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{60748D80-9DD1-4296-94BC-95BF863A29FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60748D80-9DD1-4296-94BC-95BF863A29FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60748D80-9DD1-4296-94BC-95BF863A29FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60748D80-9DD1-4296-94BC-95BF863A29FA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

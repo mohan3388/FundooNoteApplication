@@ -33,7 +33,7 @@ namespace RepositoryLayer.Service
                 userEntity.FirstName = registration.FirstName;
                 userEntity.LastName = registration.LastName;
                 userEntity.EmailId = registration.EmailId;
-                userEntity.Password = registration.Password;
+                userEntity.Password = Encrypt_Password(registration.Password);
                 fundooContext.UserTable.Add(userEntity);
                 int result = fundooContext.SaveChanges();
                 if (result > 0)
@@ -52,14 +52,30 @@ namespace RepositoryLayer.Service
         }
         public string Login(Login login)
         {
-            var data = fundooContext.UserTable.Where(x => x.EmailId == login.EmailId && x.Password == login.Password).FirstOrDefault();
-            if (data == null)
+            var data = fundooContext.UserTable.SingleOrDefault(x => x.EmailId == login.EmailId) ;
+            bool passValid = (data.EmailId == login.EmailId && Decrypt_Password(data.Password) == login.Password);
+            if (!data.Equals(null)&&passValid)
             {
-                return null;
+                return GenerateJWTToken(login.EmailId, data.UserId);
+               
             }
-            return GenerateJWTToken(login.EmailId, data.UserId);
+            return null;
         }
 
+        //[NotMapped]
+     
+        private string Decrypt_Password(string encryptpassword)
+        {
+            string pswstr = string.Empty;
+            System.Text.UTF8Encoding encode_psw = new System.Text.UTF8Encoding();
+            System.Text.Decoder Decode = encode_psw.GetDecoder();
+            byte[] todecode_byte = Convert.FromBase64String(encryptpassword);
+            int charCount = Decode.GetCharCount(todecode_byte, 0, todecode_byte.Length);
+            char[] decoded_char = new char[charCount];
+            Decode.GetChars(todecode_byte, 0, todecode_byte.Length, decoded_char, 0);
+            pswstr = new String(decoded_char);
+            return pswstr;
+        }
         private string GenerateJWTToken(string email, long UserId)
         {
             try
@@ -139,7 +155,15 @@ namespace RepositoryLayer.Service
                 throw ex;
             }
         }
-    
+
+        private string Encrypt_Password(string password)
+        {
+            string pswstr = string.Empty;
+            byte[] psw_encode = new byte[password.Length];
+            psw_encode = System.Text.Encoding.UTF8.GetBytes(password);
+            pswstr = Convert.ToBase64String(psw_encode);
+            return pswstr;
+        }
 
     }
     }
