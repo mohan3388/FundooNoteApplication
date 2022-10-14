@@ -17,14 +17,14 @@ namespace RepositoryLayer.Service
             this.fundooContext = fundooContext;
         }
 
-        public LabelEntity AddLabel(long UserId, long NoteId, string LabelName)
+        public LabelEntity AddLabel(long NoteId, string LabelName)
         {
             try
             {
 
 
                 LabelEntity entity = new LabelEntity();
-                entity.UserId = UserId;
+                //entity.UserId = UserId;
                 entity.NoteId = NoteId;
                 entity.LabelName = LabelName;
                 fundooContext.Add(entity);
