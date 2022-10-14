@@ -34,12 +34,12 @@ namespace FundooNotApplication.Controllers
             this.distributedCache=distributedCache;
         }
         [HttpPost("AddLabel")]
-        public IActionResult AddLabel(long NoteId, string Labelname)
+        public IActionResult AddLabel(long UserId, long NoteId, string Labelname)
         {
             try
             {
                 //long userId = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "UserId").Value);
-                var result = labelBL.AddLabel(NoteId, Labelname);
+                var result = labelBL.AddLabel(UserId, NoteId, Labelname);
                 if (result != null)
                 {
                     return Ok(new { success = true, message = "Data Added Successfully", data = result });

@@ -16,11 +16,11 @@ namespace BusinessLayer.Service
             this.labelRL = labelRL;
         }
 
-        public LabelEntity AddLabel(long NoteId, string LabelName)
+        public LabelEntity AddLabel(long UserId, long NoteId, string LabelName)
         {
             try
             {
-                return labelRL.AddLabel(NoteId, LabelName);
+                return labelRL.AddLabel(UserId, NoteId, LabelName);
             }
             catch (Exception)
             {
