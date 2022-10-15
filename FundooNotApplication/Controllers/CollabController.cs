@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using RepositoryLayer.Context;
 using RepositoryLayer.Entity;
@@ -27,13 +28,15 @@ namespace FundooNotApplication.Controllers
         private readonly IMemoryCache memoryCache;
         private readonly FundooContext fundooContext;
         private readonly IDistributedCache distributedCache;
-        public CollabController(ICollabBL collabBL, IMemoryCache memoryCache, FundooContext fundooContext, IDistributedCache distributedCache)
+        private readonly ILogger<CollabController> logger;
+        public CollabController(ICollabBL collabBL, IMemoryCache memoryCache, FundooContext fundooContext, IDistributedCache distributedCache, ILogger<CollabController> logger)
         {
             
             this.collabBL = collabBL;
             this.memoryCache = memoryCache;
             this.fundooContext=fundooContext;
             this.distributedCache = distributedCache;
+            this.logger = logger;
         }
 
         [HttpPost("CollabAdd")]
@@ -45,16 +48,19 @@ namespace FundooNotApplication.Controllers
                 var result = collabBL.AddCollab(NoteId, Email);
                 if (result != null)
                 {
+                    logger.LogInformation("Added successfully");
                     return Ok(new { success = true, message = "Added successfully", data = result });
                 }
                 else
                 {
+                    logger.LogInformation("failed to Add");
                     return BadRequest(new { success = false, message = "failed to Add" });
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                logger.LogError(ex.ToString());
+                throw ex;
             }
         }
         [HttpGet("RetrieveCollab")]
@@ -66,16 +72,19 @@ namespace FundooNotApplication.Controllers
                 var result = collabBL.RetrieveCollab(NoteId,UserId);
                 if(result != null)
                 {
+                    logger.LogInformation("Data retrieved");
                     return Ok(new { success = true, message = "Data retrieved", data=result});
                 }
                 else
                 {
+                    logger.LogInformation("Data retrieved Failed");
                     return BadRequest(new { success = false, message = "Data retrieved Failed" });
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                logger.LogError(ex.ToString());
+                throw ex;
             }
         }
         [HttpDelete("DeleteCollab")]
@@ -86,15 +95,18 @@ namespace FundooNotApplication.Controllers
                 var result = collabBL.DeleteCollab(NoteId, Email);
                 if (result != null)
                 {
+                    logger.LogInformation("Deleted successfully");
                     return Ok(new { success = true, message = "Deleted successfully", data = result });
                 }
                 else
                 {
-                    return BadRequest(new { success = false, message = "Note Deleted" });
+                    logger.LogInformation("Not Deleted");
+                    return BadRequest(new { success = false, message = "Not Deleted" });
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                logger.LogError(ex.ToString());
                 throw;
             }
         }

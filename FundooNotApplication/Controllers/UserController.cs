@@ -4,7 +4,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using NLogger.Interface;
+
+using RepositoryLayer.Context;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,12 +18,14 @@ namespace FundooNotApplication.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserBL userBL;
-        private readonly INLogger logger;
-
-        public UserController(IUserBL userBL,INLogger logger)
+        private readonly ILogger<UserController> logger;
+    
+        private readonly FundooContext fundooContext;
+        public UserController(FundooContext fundooContext,IUserBL userBL, ILogger<UserController> logger)
         {
+            this.fundooContext = fundooContext; 
             this.userBL = userBL;
-            this.logger=logger;
+            this.logger = logger;
         }
 
         [HttpPost("Register")]
@@ -34,19 +37,20 @@ namespace FundooNotApplication.Controllers
            
                 if (result!=null)
                 {
+                    logger.LogInformation("User Registration Succesfull");
                     return this.Ok(new { success = true, message = "user registarion successfull", data = result });
                 }
                 else
                 {
                     //
                     //throw new Exception("Error occured");
-                    this.logger.LogInfo($"User Regestration Email : {register.EmailId}");
+                    logger.LogInformation("User Registration failed");
                     return this.BadRequest(new { success = false, message = "user registarion unsuccessfull" });
                 }
             }
             catch(Exception ex)
             {
-                logger.LogError($"User Regestration Fail: {register.EmailId}");
+                logger.LogError(ex.ToString());
                 throw ex;
             }
         }
@@ -58,17 +62,19 @@ namespace FundooNotApplication.Controllers
                 var user = userBL.Login(tr);
                 if (user != null)
                 {
-                    this.logger.LogInfo($"User login Email : {tr.EmailId}");
+                    logger.LogInformation("Login Successfilly");
                     return this.Ok(new { success = true, message = "user login successfull", data = user });
                 }
                 else
                 {
-                    logger.LogError($"User login Fail: {tr.EmailId}");
+
+                    logger.LogInformation("Login Failed");
                     return this.BadRequest(new { success = false, message = "user login unsuccessfull" });
                 }
             }
             catch (Exception ex)
             {
+                logger.LogError(ex.ToString());
                 throw ex;
             }
         }
@@ -81,14 +87,19 @@ namespace FundooNotApplication.Controllers
                 var result = userBL.ForgetPassword(emailId);
                 if(result!=null)
                 {
+
+                    logger.LogInformation("message sent succefully");
                     return this.Ok(new { success = true, message = "message sent succefully" });
                 }
                 else
                 {
+
+                    logger.LogInformation("message sent failed");
                     return this.BadRequest(new { success = false, message = "message not found" });
                 }
             } catch(Exception ex)
             {
+                logger.LogError(ex.ToString());
                 throw ex;
             }
         }
@@ -100,7 +111,7 @@ namespace FundooNotApplication.Controllers
             {
                 if (modelPassword.Password != modelPassword.ConfirmPassword)
                 {
-                   
+                    logger.LogInformation("password not matched");
                     return this.BadRequest(new { success = false, message = "New Password and Confirm Password are not equal." });
                 }
 
@@ -110,18 +121,18 @@ namespace FundooNotApplication.Controllers
                     IEnumerable<Claim> claims = identity.Claims;
                     var email = claims.Where(p => p.Type == @"Email").FirstOrDefault()?.Value;
                     this.userBL.ResetPassword(email, modelPassword);
-                   
+                    logger.LogInformation("Password Reset Done");
                     return this.Ok(new { success = true, message = "Password Reset Sucessfully...", email = $"{email}" });
                 }
                 else
                 {
-                   
+                    logger.LogInformation("Password Reset Failed");
                     return this.BadRequest(new { success = false, message = "Password Reset Unsuccessful!!!" });
                 }
             }
             catch (Exception ex)
             {
-               
+                logger.LogError(ex.ToString());
                 throw ex;
             }
         }

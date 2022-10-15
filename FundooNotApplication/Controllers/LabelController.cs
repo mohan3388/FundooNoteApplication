@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using RepositoryLayer.Context;
 using RepositoryLayer.Entity;
@@ -25,13 +26,15 @@ namespace FundooNotApplication.Controllers
         private readonly IMemoryCache memoryCache;
         private readonly FundooContext fundooContext;
         private readonly IDistributedCache distributedCache;
-        public LabelController(ILabelBL labelBL, IMemoryCache memoryCache, FundooContext fundooContext, IDistributedCache distributedCache)
+        private readonly ILogger<LabelController> logger;
+        public LabelController(ILabelBL labelBL, IMemoryCache memoryCache, FundooContext fundooContext, IDistributedCache distributedCache, ILogger<LabelController> logger)
         {
 
             this.labelBL = labelBL;
             this.memoryCache=memoryCache;
             this.fundooContext = fundooContext;
             this.distributedCache=distributedCache;
+            this.logger=logger;
         }
         [HttpPost("AddLabel")]
         public IActionResult AddLabel(long UserId, long NoteId, string Labelname)
@@ -42,17 +45,20 @@ namespace FundooNotApplication.Controllers
                 var result = labelBL.AddLabel(UserId, NoteId, Labelname);
                 if (result != null)
                 {
-                    return Ok(new { success = true, message = "Data Added Successfully", data = result });
+                    logger.LogInformation("Label Added Successfully");
+                    return Ok(new { success = true, message = "Label Added Successfully", data = result });
 
                 }
                 else
                 {
-                    return BadRequest(new { success = false, message = "Data Added failed" });
+                    logger.LogInformation("Label Added failed");
+                    return BadRequest(new { success = false, message = "Label Added failed" });
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                logger.LogError(ex.ToString());
+                throw ex;
             }
         }
         [HttpGet("GetLabel")]
@@ -63,16 +69,19 @@ namespace FundooNotApplication.Controllers
                 var result = labelBL.GetLabel(NoteId);
                 if (result != null)
                 {
+                    logger.LogInformation("Label retrieved");
                     return Ok(new { success = true, message = "retrieved", data = result });
                 }
                 else
                 {
+                    logger.LogInformation("Label retrieve failed");
                     return BadRequest(new { success = false, message = "failed" });
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                logger.LogError(ex.ToString());
+                throw ex;
             }
         }
         [HttpPut("Updatelabel")]
@@ -84,17 +93,20 @@ namespace FundooNotApplication.Controllers
                 var result = labelBL.UpdateLabel(LabelId, Labelname);
                 if (result != null)
                 {
+                    logger.LogInformation("Updated");
                     return Ok(new { success = true, message = "Updated", data = result });
                 }
                 else
                 {
+                    logger.LogInformation("Failed");
                     return BadRequest(new { success = false, message = "Failed" });
                 }
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                logger.LogError(ex.ToString());
+                throw ex;
             }
         }
         [HttpDelete("DeleteLabel")]
@@ -106,16 +118,19 @@ namespace FundooNotApplication.Controllers
                 var result =labelBL.Deletelabel(LabelId, NoteId);
                 if(result != null)
                 {
+                    logger.LogInformation("Deleted");
                     return Ok(new { success = true, message = "Deleted", data = result });
                 }
                 else
                 {
+                    logger.LogInformation("failed");
                     return BadRequest(new { success = false, message = "failed" });
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                logger.LogError(ex.ToString());
+                throw ex;
             }
         }
         [HttpGet("redis")]

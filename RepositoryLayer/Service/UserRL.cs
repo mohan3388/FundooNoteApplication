@@ -76,6 +76,14 @@ namespace RepositoryLayer.Service
             pswstr = new String(decoded_char);
             return pswstr;
         }
+        private string Encrypt_Password(string password)
+        {
+            string pswstr = string.Empty;
+            byte[] psw_encode = new byte[password.Length];
+            psw_encode = System.Text.Encoding.UTF8.GetBytes(password);
+            pswstr = Convert.ToBase64String(psw_encode);
+            return pswstr;
+        }
         private string GenerateJWTToken(string email, long UserId)
         {
             try
@@ -144,7 +152,7 @@ namespace RepositoryLayer.Service
 
                 if (modelPassword.Password == modelPassword.ConfirmPassword)
                 {
-                    user.Password = modelPassword.Password;
+                    user.Password = Decrypt_Password(modelPassword.Password);
                     this.fundooContext.SaveChanges();
                 }
 
@@ -156,14 +164,7 @@ namespace RepositoryLayer.Service
             }
         }
 
-        private string Encrypt_Password(string password)
-        {
-            string pswstr = string.Empty;
-            byte[] psw_encode = new byte[password.Length];
-            psw_encode = System.Text.Encoding.UTF8.GetBytes(password);
-            pswstr = Convert.ToBase64String(psw_encode);
-            return pswstr;
-        }
+     
 
     }
     }

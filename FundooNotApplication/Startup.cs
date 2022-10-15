@@ -12,8 +12,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using NLogger.Interface;
-using NLogger.Service;
+
 using RepositoryLayer.Context;
 using RepositoryLayer.Interface;
 using RepositoryLayer.Service;
@@ -47,7 +46,7 @@ namespace FundooNotApplication
             services.AddTransient<ICollabRL, CollabRL>();
             services.AddTransient<ILabelBL, LabelBL>();
             services.AddTransient<ILabelRL, LabelRL>();
-            services.AddTransient<INLogger, NLoggers>();
+            
             services.AddSwaggerGen(c =>
             {
                 var jwtSecurityScheme = new OpenApiSecurityScheme
@@ -96,7 +95,7 @@ namespace FundooNotApplication
             });
             services.AddMemoryCache();
         }
-
+    
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
