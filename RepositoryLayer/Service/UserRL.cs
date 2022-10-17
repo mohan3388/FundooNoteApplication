@@ -152,7 +152,7 @@ namespace RepositoryLayer.Service
 
                 if (modelPassword.Password == modelPassword.ConfirmPassword)
                 {
-                    user.Password = Decrypt_Password(modelPassword.Password);
+                    user.Password = Encrypt_Password(modelPassword.Password);
                     this.fundooContext.SaveChanges();
                 }
 
