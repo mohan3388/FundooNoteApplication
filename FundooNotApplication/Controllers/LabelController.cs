@@ -36,7 +36,7 @@ namespace FundooNotApplication.Controllers
             this.distributedCache=distributedCache;
             this.logger=logger;
         }
-        [HttpPost("AddLabel")]
+        [HttpPost("Add")]
         public IActionResult AddLabel(long UserId, long NoteId, string Labelname)
         {
             try
@@ -61,7 +61,7 @@ namespace FundooNotApplication.Controllers
                 throw ex;
             }
         }
-        [HttpGet("GetLabel")]
+        [HttpGet("Get")]
         public IActionResult GetLabel(long NoteId)
         {
             try
@@ -84,7 +84,7 @@ namespace FundooNotApplication.Controllers
                 throw ex;
             }
         }
-        [HttpPut("Updatelabel")]
+        [HttpPut("Update")]
         public IActionResult UpdateLabel(long LabelId, string Labelname)
         {
             try
@@ -109,7 +109,7 @@ namespace FundooNotApplication.Controllers
                 throw ex;
             }
         }
-        [HttpDelete("DeleteLabel")]
+        [HttpDelete("Delete")]
         public IActionResult DeleteLabel(long LabelId, long NoteId)
         {
             try
@@ -133,6 +133,7 @@ namespace FundooNotApplication.Controllers
                 throw ex;
             }
         }
+      
         [HttpGet("redis")]
         public async Task<IActionResult> GetAllLabelUsingRedisCache()
         {

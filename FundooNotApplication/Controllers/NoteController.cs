@@ -38,7 +38,7 @@ namespace FundooNotApplication.Controllers
             this.logger = logger;
         }
 
-        [HttpPost("AddNote")]
+        [HttpPost("Add")]
         public IActionResult AddNotes(NotePostModel note)
         {
             try
@@ -64,11 +64,11 @@ namespace FundooNotApplication.Controllers
             }
         }
 
-        [HttpGet("GetNotes")]
+        [HttpGet("Get")]
         public IActionResult GetAllNotes(long NoteId)
         {
             try {
-                long userId = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "UserId").Value);
+               // long userId = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "UserId").Value);
                 var result = noteBL.GetAllNotes(NoteId);
                 if (result != null)
                 {
@@ -88,7 +88,7 @@ namespace FundooNotApplication.Controllers
             }
         }
 
-        [HttpPut("Updatenotes")]
+        [HttpPut("Update")]
         public IActionResult UpdateNotes(NotePostModel notePost, long NoteId)
         {
             try
@@ -113,7 +113,7 @@ namespace FundooNotApplication.Controllers
             }
         }
 
-        [HttpDelete("DeleteNote")]
+        [HttpDelete("Delete")]
         public IActionResult DeletNote(long NoteId)
         {
             try
@@ -137,7 +137,7 @@ namespace FundooNotApplication.Controllers
                 throw ex;
             }
         }
-        [HttpPut("PinNotes")]
+        [HttpPut("Pin")]
         public IActionResult PinNotes(long NoteId)
         {
             try
@@ -165,7 +165,7 @@ namespace FundooNotApplication.Controllers
                 throw ex;
             }
         }
-        [HttpPut("ArchieveNote")]
+        [HttpPut("Archieve")]
         public IActionResult ArchieveNote(long NoteId)
         {
             try
@@ -194,7 +194,7 @@ namespace FundooNotApplication.Controllers
             }
         }
     
-        [HttpPut("TrashNotes")]
+        [HttpPut("Trash")]
         public IActionResult TrashNotes(long NoteId)
         {
             try
@@ -223,12 +223,12 @@ namespace FundooNotApplication.Controllers
                 throw ex;
             }
         }
-        [HttpPut("ChangeColor")]
+        [HttpPut("Color")]
         public IActionResult ChangeColor(long NoteId, string Color)
         {
             try
             {
-                long UserId = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "UserId").Value);
+                //long UserId = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "UserId").Value);
                 var result = noteBL.ChangeColor(NoteId, Color);
                 if(result != null)
                 {
@@ -247,7 +247,7 @@ namespace FundooNotApplication.Controllers
                 throw;
             }
         }
-        [HttpPut("UploadImage")]
+        [HttpPut("Image")]
         public IActionResult UploadImage(IFormFile image, long NoteId)
         {
             try

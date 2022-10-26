@@ -38,14 +38,14 @@ namespace FundooNotApplication.Controllers
                 if (result!=null)
                 {
                     logger.LogInformation("User Registration Succesfull");
-                    return this.Ok(new { success = true, message = "user registarion successfull", data = result });
+                    return Ok(new { success = true, message = "user registarion successfull", data = result });
                 }
                 else
                 {
                     //
                     //throw new Exception("Error occured");
                     logger.LogInformation("User Registration failed");
-                    return this.BadRequest(new { success = false, message = "user registarion unsuccessfull" });
+                    return BadRequest(new { success = false, message = "user registarion unsuccessfull" });
                 }
             }
             catch(Exception ex)
@@ -63,13 +63,13 @@ namespace FundooNotApplication.Controllers
                 if (user != null)
                 {
                     logger.LogInformation("Login Successfilly");
-                    return this.Ok(new { success = true, message = "user login successfull", data = user });
+                    return Ok(new { success = true, message = "user login successfull", data = user });
                 }
                 else
                 {
 
                     logger.LogInformation("Login Failed");
-                    return this.BadRequest(new { success = false, message = "user login unsuccessfull" });
+                    return BadRequest(new { success = false, message = "user login unsuccessfull" });
                 }
             }
             catch (Exception ex)
@@ -89,13 +89,13 @@ namespace FundooNotApplication.Controllers
                 {
 
                     logger.LogInformation("message sent succefully");
-                    return this.Ok(new { success = true, message = "message sent succefully" });
+                    return Ok(new { success = true, message = "message sent succefully" });
                 }
                 else
                 {
 
                     logger.LogInformation("message sent failed");
-                    return this.BadRequest(new { success = false, message = "message not found" });
+                    return BadRequest(new { success = false, message = "message not found" });
                 }
             } catch(Exception ex)
             {
@@ -112,7 +112,7 @@ namespace FundooNotApplication.Controllers
                 if (modelPassword.Password != modelPassword.ConfirmPassword)
                 {
                     logger.LogInformation("password not matched");
-                    return this.BadRequest(new { success = false, message = "New Password and Confirm Password are not equal." });
+                    return BadRequest(new { success = false, message = "New Password and Confirm Password are not equal." });
                 }
 
                 var identity = User.Identity as ClaimsIdentity;
@@ -120,14 +120,14 @@ namespace FundooNotApplication.Controllers
                 {
                     IEnumerable<Claim> claims = identity.Claims;
                     var email = claims.Where(p => p.Type == @"Email").FirstOrDefault()?.Value;
-                    this.userBL.ResetPassword(email, modelPassword);
+                    userBL.ResetPassword(email, modelPassword);
                     logger.LogInformation("Password Reset Done");
-                    return this.Ok(new { success = true, message = "Password Reset Sucessfully...", email = $"{email}" });
+                    return Ok(new { success = true, message = "Password Reset Sucessfully...", email = $"{email}" });
                 }
                 else
                 {
                     logger.LogInformation("Password Reset Failed");
-                    return this.BadRequest(new { success = false, message = "Password Reset Unsuccessful!!!" });
+                    return BadRequest(new { success = false, message = "Password Reset Unsuccessful!!!" });
                 }
             }
             catch (Exception ex)

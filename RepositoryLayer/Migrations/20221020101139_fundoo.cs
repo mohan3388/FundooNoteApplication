@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace RepositoryLayer.Migrations
 {
-    public partial class fundoonotes : Migration
+    public partial class fundoo : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -49,7 +49,7 @@ namespace RepositoryLayer.Migrations
                         column: x => x.UserId,
                         principalTable: "UserTable",
                         principalColumn: "UserId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -86,6 +86,11 @@ namespace RepositoryLayer.Migrations
                     LabelId = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     LabelName = table.Column<string>(nullable: true),
+                    Color = table.Column<string>(nullable: true),
+                    Image = table.Column<string>(nullable: true),
+                    Archieve = table.Column<bool>(nullable: false),
+                    IsPinned = table.Column<bool>(nullable: false),
+                    Trash = table.Column<bool>(nullable: false),
                     UserId = table.Column<long>(nullable: false),
                     NoteId = table.Column<long>(nullable: false)
                 },

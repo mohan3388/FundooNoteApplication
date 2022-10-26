@@ -104,7 +104,7 @@ namespace RepositoryLayer.Service
                     SigningCredentials =
                     new SigningCredentials(
                     new SymmetricSecurityKey(tokenKey),
-                    SecurityAlgorithms.HmacSha256Signature),
+                    SecurityAlgorithms.HmacSha256Signature), //points to the 256-bit HMAC cryptographic algorithm for digitally signing XML.
                 };
                 var token = tokenHandler.CreateToken(tokenDescriptor);
                 return tokenHandler.WriteToken(token);

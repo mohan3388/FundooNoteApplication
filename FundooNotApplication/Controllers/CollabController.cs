@@ -39,7 +39,7 @@ namespace FundooNotApplication.Controllers
             this.logger = logger;
         }
 
-        [HttpPost("CollabAdd")]
+        [HttpPost("Add")]
         public IActionResult AddCollab(long NoteId, string Email)
         {
             try
@@ -63,7 +63,7 @@ namespace FundooNotApplication.Controllers
                 throw ex;
             }
         }
-        [HttpGet("RetrieveCollab")]
+        [HttpGet("Retrieve")]
         public IActionResult RetrieveCollab(long NoteId, long UserId)
         {
             try
@@ -87,7 +87,7 @@ namespace FundooNotApplication.Controllers
                 throw ex;
             }
         }
-        [HttpDelete("DeleteCollab")]
+        [HttpDelete("Delete")]
         public IActionResult DeleteCollab(long NoteId,string Email)
         {
             try

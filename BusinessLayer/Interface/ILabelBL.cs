@@ -1,4 +1,5 @@
-﻿using RepositoryLayer.Entity;
+﻿using Microsoft.AspNetCore.Http;
+using RepositoryLayer.Entity;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,5 +12,6 @@ namespace BusinessLayer.Interface
         public IEnumerable<LabelEntity> GetLabel(long NoteId);
         public LabelEntity UpdateLabel(long LabelId, string Labelname);
         public bool Deletelabel(long LabelId, long NoteId);
+      
     }
 }

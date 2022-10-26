@@ -10,8 +10,8 @@ using RepositoryLayer.Context;
 namespace RepositoryLayer.Migrations
 {
     [DbContext(typeof(FundooContext))]
-    [Migration("20221012073411_fundoonotes")]
-    partial class fundoonotes
+    [Migration("20221020101139_fundoo")]
+    partial class fundoo
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -53,11 +53,26 @@ namespace RepositoryLayer.Migrations
                         .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<bool>("Archieve")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Color")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Image")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsPinned")
+                        .HasColumnType("bit");
+
                     b.Property<string>("LabelName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<long>("NoteId")
                         .HasColumnType("bigint");
+
+                    b.Property<bool>("Trash")
+                        .HasColumnType("bit");
 
                     b.Property<long>("UserId")
                         .HasColumnType("bigint");
