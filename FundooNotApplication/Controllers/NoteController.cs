@@ -63,13 +63,15 @@ namespace FundooNotApplication.Controllers
                 throw ex;
             }
         }
+        [Authorize]
 
         [HttpGet("Get")]
-        public IActionResult GetAllNotes(long NoteId)
+        public IActionResult GetAllNotes()
         {
-            try {
-               // long userId = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "UserId").Value);
-                var result = noteBL.GetAllNotes(NoteId);
+            try
+            {
+                // long userId = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "UserId").Value);
+                var result = noteBL.GetAllNotes();
                 if (result != null)
                 {
                     logger.LogInformation("data retrieved");
@@ -148,7 +150,8 @@ namespace FundooNotApplication.Controllers
                 {
                     logger.LogInformation("Pinned Notes");
                     return Ok(new { success = true, message = "Pinned Notes", data = result });
-                } else if (result != result)
+                }
+                else if (result != result)
                 {
                     logger.LogInformation("Could not Pined Notes");
                     return Ok(new { success = true, message = "Could not Pined Notes" });
@@ -166,7 +169,8 @@ namespace FundooNotApplication.Controllers
             }
         }
         [HttpPut("Archieve")]
-        public IActionResult ArchieveNote(long NoteId)
+
+        public ActionResult ArchiveNote(long NoteId)
         {
             try
             {
@@ -174,16 +178,77 @@ namespace FundooNotApplication.Controllers
                 var result = noteBL.ArchieveNote(UserId, NoteId);
                 if (result != null)
                 {
-                    logger.LogInformation("Archieved Notes");
-                    return Ok(new { success = true, message = "Archieved Notes", data = result });
-                } else if (result != result)
+                    logger.LogInformation("Archived Note Successfully");
+                    return Ok(new { success = true, message = "Archived Note Successfully", data = result });
+                }
+                else if (result == null)
                 {
-                    logger.LogInformation("Could not Archieved Notes");
+                    logger.LogInformation("Archived Note UnSuccessfull");
+                    return Ok(new { success = true, message = "Archived Note UnSuccessfull", data = result });
+                }
+                else
+                {
+                    logger.LogInformation("Could not perform Archive Operation");
+                    return BadRequest(new { success = false, message = "Could not perform Archive Operation" });
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex.Message);
+                throw ex;
+            }
+        }
+        //public IActionResult ArchiveNotes(long noteId)
+        //{
+        //    try
+        //    {
+        //        var result = noteBL.ArchieveNote(noteId);
+        //        if (!result.Equals(null))
+        //        {
+        //            logger.LogInformation("Archive Note succesafully");
+        //            return this.Ok(new
+        //            {
+        //                success = true,
+        //                message = "Archive Note succesafully",
+        //                data = result
+        //            });
+        //        }
+        //        else
+        //        {
+        //            logger.LogInformation("something went wrong");
+        //            return this.BadRequest(new
+        //            {
+        //                success = false,
+        //                message = "something went wrong"
+        //            });
+        //        }
+        //    }
+        //    catch (Exception)
+        //    {
+        //        throw;
+        //    }
+    
+
+        [HttpPut("TrashNotes/{NoteId}")]
+        public IActionResult TrashNotes(long NoteId)
+        {
+            try
+            {
+                long UserId = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "UserId").Value);
+                var result = noteBL.TrashNotes(UserId, NoteId);
+                if (result != null)
+                {
+                    logger.LogInformation("Archieved Notes");
+                    return Ok(new { success = true, message = "Trashed Notes", data = result });
+                }
+                else if (result != result)
+                {
+                    logger.LogInformation("Could not Trashed Notes");
                     return Ok(new { success = true, message = "Could not Archieved Notes" });
                 }
                 else
                 {
-                    logger.LogInformation("Failed to Archieve");
+                    logger.LogInformation("Failed to Trashed");
                     return BadRequest(new { success = false, message = "Failed to Archieved Notes" });
                 }
             }
@@ -193,28 +258,22 @@ namespace FundooNotApplication.Controllers
                 throw ex;
             }
         }
-    
-        [HttpPut("Trash")]
-        public IActionResult TrashNotes(long NoteId)
+        [HttpGet("GetTrashNotes")]
+        public IActionResult GetTrashNotes()
         {
             try
             {
-                long UserId = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "UserId").Value);
-                var result = noteBL.TrashNotes(UserId, NoteId);
+                // long userId = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "UserId").Value);
+                var result = noteBL.GetTrashNotes();
                 if (result != null)
                 {
-                    logger.LogInformation("Trash Notes");
-                    return Ok(new { success = true, message = "Trash Notes", data = result });
-                }
-                else if (result != result)
-                {
-                    logger.LogInformation("Could not Trash Notes");
-                    return Ok(new { success = true, message = "Could not Trash Notes" });
+                    logger.LogInformation("data retrieved");
+                    return Ok(new { success = true, message = "successfully trash data retrieved", data = result });
                 }
                 else
                 {
-                    logger.LogInformation("Failed to Trash");
-                    return BadRequest(new { success = false, message = "Failed to Trash Notes" });
+                    logger.LogInformation("failed to retrieve data");
+                    return BadRequest(new { success = false, message = "failed to " });
                 }
             }
             catch (Exception ex)
@@ -223,6 +282,34 @@ namespace FundooNotApplication.Controllers
                 throw ex;
             }
         }
+        //public IActionResult TrashNotes(long NoteId)
+        //{
+        //    try
+        //    {
+        //        long UserId = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "UserId").Value);
+        //        var result = noteBL.TrashNotes(UserId, NoteId);
+        //        if (result != null)
+        //        {
+        //            logger.LogInformation("Trash Notes");
+        //            return Ok(new { success = true, message = "Trash Notes", data = result });
+        //        }
+        //        else if (result != result)
+        //        {
+        //            logger.LogInformation("Could not Trash Notes");
+        //            return Ok(new { success = true, message = "Could not Trash Notes" });
+        //        }
+        //        else
+        //        {
+        //            logger.LogInformation("Failed to Trash");
+        //            return BadRequest(new { success = false, message = "Failed to Trash Notes" });
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        logger.LogError(ex.ToString());
+        //        throw ex;
+        //    }
+        //}
         [HttpPut("Color")]
         public IActionResult ChangeColor(long NoteId, string Color)
         {
@@ -230,15 +317,15 @@ namespace FundooNotApplication.Controllers
             {
                 //long UserId = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "UserId").Value);
                 var result = noteBL.ChangeColor(NoteId, Color);
-                if(result != null)
+                if (result != null)
                 {
                     logger.LogInformation("Color Changed");
-                    return Ok(new { success = true, message = "Color Changed" , data=result});
+                    return Ok(new { success = true, message = "Color Changed", data = result });
                 }
                 else
                 {
                     logger.LogInformation("Color not Changed");
-                    return BadRequest(new { success = false, message = "Color not Changed"});
+                    return BadRequest(new { success = false, message = "Color not Changed" });
                 }
             }
             catch (Exception ex)

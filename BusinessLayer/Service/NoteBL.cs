@@ -28,11 +28,11 @@ namespace BusinessLayer.Service
                 throw ex;
             }
         }
-        public IEnumerable<NoteEntity> GetAllNotes(long NoteId)
+        public IEnumerable<NoteEntity> GetAllNotes()
         {
             try
             {
-                return noteRL.GetAllNotes(NoteId);
+                return noteRL.GetAllNotes();
             }
             catch (Exception)
             {
@@ -77,7 +77,7 @@ namespace BusinessLayer.Service
         {
             try
             {
-                return noteRL.ArchieveNote(UserId, NoteId);
+                return noteRL.ArchiveNotes(UserId,NoteId);
             }
             catch (Exception)
             {
@@ -89,6 +89,17 @@ namespace BusinessLayer.Service
             try
             {
                 return noteRL.TrashNotes(UserId, NoteId);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        public IEnumerable<NoteEntity> GetTrashNotes()
+        {
+            try
+            {
+                return noteRL.GetTrashNotes();
             }
             catch (Exception)
             {

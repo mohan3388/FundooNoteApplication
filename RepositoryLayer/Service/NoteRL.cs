@@ -59,11 +59,12 @@ namespace RepositoryLayer.Service
                 throw ex;
             }
         }
-        public IEnumerable<NoteEntity> GetAllNotes(long NoteId)
+        public IEnumerable<NoteEntity> GetAllNotes()
         {
             try
             {
-                var result = fundonoteContext.NoteTable.Where(x => x.NoteId == NoteId);
+                var result = fundonoteContext.NoteTable;
+
                 return result;
             }
             catch (Exception)
@@ -142,7 +143,7 @@ namespace RepositoryLayer.Service
                 throw;
             }
         }
-        public NoteEntity ArchieveNote(long UserId, long NoteId)
+        public NoteEntity ArchiveNotes(long UserId, long NoteId)
         {
             try
             {
@@ -151,11 +152,37 @@ namespace RepositoryLayer.Service
                 {
                     result.Archieve = false;
                     fundonoteContext.SaveChanges();
-                    return result;
+                    return null;
                 }
                 else
                 {
                     result.Archieve = true;
+                    fundonoteContext.SaveChanges();
+                    return result;
+
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        public NoteEntity TrashNotes(long UserId, long NoteId)
+        {
+
+            try
+            {
+                var result = fundonoteContext.NoteTable.Where(x => x.UserId == UserId && x.NoteId == NoteId).FirstOrDefault();
+                if (result.Trash == true)
+                {
+                    result.Trash = false;
+                    fundonoteContext.SaveChanges();
+                    return result;
+                }
+                else
+                {
+                    result.Trash = true;
                     fundonoteContext.SaveChanges();
                     return null;
                 }
@@ -165,23 +192,13 @@ namespace RepositoryLayer.Service
                 throw;
             }
         }
-        public NoteEntity TrashNotes(long UserId, long NoteId)
+        public IEnumerable<NoteEntity> GetTrashNotes()
         {
             try
             {
-                var result = fundonoteContext.NoteTable.Where(x => x.UserId == UserId && x.NoteId == NoteId).FirstOrDefault();
-                if (result.Archieve == true)
-                {
-                    result.Archieve = false;
-                    fundonoteContext.SaveChanges();
-                    return result;
-                }
-                else
-                {
-                    result.Archieve = true;
-                    fundonoteContext.SaveChanges();
-                    return null;
-                }
+                var result = fundonoteContext.NoteTable.Where(x => x.Trash == false);
+
+                return result;
             }
             catch (Exception)
             {
@@ -216,10 +233,10 @@ namespace RepositoryLayer.Service
                 var result = fundonoteContext.NoteTable.Where(x => x.UserId == UserId && x.NoteId == NoteId).FirstOrDefault();
                 if (result != null)
                 {
-                   
+
                     Account account = new Account(
                          "dozqk0y2u",        // CLOUD_NAME,API_KEY,API_SECRET
-                         "191551212515752",  
+                         "191551212515752",
                          "OBsmdMUliFYjRcHITgaADE-vXbM");
                     Cloudinary cloudinary = new Cloudinary(account);
 
@@ -229,12 +246,12 @@ namespace RepositoryLayer.Service
                     };
                     var uploadResult = cloudinary.Upload(uploadParams);
                     string imagePath = uploadResult.Url.ToString();
-                  
+
                     result.Image = imagePath;
                     fundonoteContext.SaveChanges();
                     return result;
-                 }
-               else
+                }
+                else
                 {
                     return null;
 

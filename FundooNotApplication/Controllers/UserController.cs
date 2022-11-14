@@ -78,7 +78,7 @@ namespace FundooNotApplication.Controllers
                 throw ex;
             }
         }
-        [Authorize]
+       // [Authorize]
         [HttpPost("Forgetpassword")]
         public IActionResult ForgetPassword(string emailId)
         {
@@ -103,7 +103,7 @@ namespace FundooNotApplication.Controllers
                 throw ex;
             }
         }
-        [Authorize]
+       [Authorize]
         [HttpPost("ResetPassword")]
         public IActionResult ResetPassword(PasswordResetModel modelPassword)
         {
